@@ -25,6 +25,38 @@ local OrionLib = {
     SaveCfg = false
 }
 
+local button = Instance.new("ImageButton")
+button.Size = UDim2.new(0, 50, 0, 50)
+button.Position = UDim2.new(0.5, -25, 0, 10)
+button.AnchorPoint = Vector2.new(0.5, 0)
+button.BackgroundTransparency = 1
+button.Image = "rbxassetid://17683987579"
+button.ZIndex = 2
+button.Parent = game:GetService("StarterGui")
+
+local hub = Instance.new("Frame")
+hub.Size = UDim2.new(0.5, 0, 0.5, 0)
+hub.Position = UDim2.new(0.25, 0, 0.25, 0)
+hub.Parent = game:GetService("StarterGui")
+
+local isMinimized = false
+
+button.MouseButton1Click:Connect(function()
+    if isMinimized then
+        hub.Visible = true
+        isMinimized = false
+    else
+        hub.Visible = false
+        isMinimized = true
+    end
+end)
+
+local function updateButtonPosition()
+    button.Position = UDim2.new(0.5, -25, 0, 10)
+end
+
+game:GetService("RunService").RenderStepped:Connect(updateButtonPosition)
+
 local Icons = {}
 
 local Success, Response = pcall(function()
