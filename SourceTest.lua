@@ -18,12 +18,64 @@ local SixLib = {
             Divider = Color3.fromRGB(60, 60, 60),
             Text = Color3.fromRGB(240, 240, 240),
             TextDark = Color3.fromRGB(150, 150, 150)
+        },
+        Light = {
+            Main = Color3.fromRGB(255, 255, 255),
+            Second = Color3.fromRGB(230, 230, 230),
+            Stroke = Color3.fromRGB(200, 200, 200),
+            Divider = Color3.fromRGB(200, 200, 200),
+            Text = Color3.fromRGB(0, 0, 0),
+            TextDark = Color3.fromRGB(80, 80, 80)
+        },
+        Blue = {
+            Main = Color3.fromRGB(0, 0, 128),
+            Second = Color3.fromRGB(0, 0, 255),
+            Stroke = Color3.fromRGB(100, 100, 255),
+            Divider = Color3.fromRGB(100, 100, 255),
+            Text = Color3.fromRGB(255, 255, 255),
+            TextDark = Color3.fromRGB(200, 200, 255)
+        },
+        Green = {
+            Main = Color3.fromRGB(0, 128, 0),
+            Second = Color3.fromRGB(0, 255, 0),
+            Stroke = Color3.fromRGB(100, 255, 100),
+            Divider = Color3.fromRGB(100, 255, 100),
+            Text = Color3.fromRGB(255, 255, 255),
+            TextDark = Color3.fromRGB(200, 255, 200)
+        },
+        Red = {
+            Main = Color3.fromRGB(128, 0, 0),
+            Second = Color3.fromRGB(255, 0, 0),
+            Stroke = Color3.fromRGB(255, 100, 100),
+            Divider = Color3.fromRGB(255, 100, 100),
+            Text = Color3.fromRGB(255, 255, 255),
+            TextDark = Color3.fromRGB(255, 200, 200)
         }
     },
     SelectedTheme = "Default",
     Folder = nil,
     SaveCfg = false
 }
+
+function SixLib:SetTheme(themeName)
+    local theme = self.Themes[themeName]
+    if theme then
+        self.SelectedTheme = themeName
+        for _, obj in pairs(self.ThemeObjects) do
+            if obj.Property and obj.Color then
+                obj.Instance[obj.Property] = theme[obj.Color]
+            end
+        end
+    end
+end
+
+function SixLib:AddThemeObject(instance, property, color)
+    table.insert(self.ThemeObjects, {Instance = instance, Property = property, Color = color})
+    instance[property] = self.Themes[self.SelectedTheme][color]
+end
+
+-- Example of use
+-- SixLib:SetTheme("Blue")
 
 --Feather Icons https://raw.githubusercontent.com/ySixxNz/LibraryV1/LibraryV1/Icons.json - Created by 7kayoh
 
@@ -56,7 +108,7 @@ guiRH = Instance.new("ScreenGui", Six)
 nextb = Instance.new("ImageButton", guiRH)
 gui = Instance.new("UICorner", nextb)
 
-Six.Name = "Six Hub <Six Lib>"
+Six.Name = "Six Library <Six Lib>"
 
 guiRH.Name = "Minimize"
 nextb.Position = UDim2.new(0, 100, 0, 60)
@@ -677,14 +729,14 @@ function SixLib:MakeWindow(WindowConfig)
     local UIHidden = false
 
     WindowConfig = WindowConfig or {}
-    WindowConfig.Name = WindowConfig.Name or "Six Hub"
+    WindowConfig.Name = WindowConfig.Name or "Six Library"
     WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
     WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
     WindowConfig.HidePremium = WindowConfig.HidePremium or false
     if WindowConfig.IntroEnabled == nil then
         WindowConfig.IntroEnabled = true
     end
-    WindowConfig.IntroText = WindowConfig.IntroText or "Six Hub"
+    WindowConfig.IntroText = WindowConfig.IntroText or "Six Library"
     WindowConfig.CloseCallback = WindowConfig.CloseCallback or function()
         end
     WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
@@ -1057,7 +1109,7 @@ function SixLib:MakeWindow(WindowConfig)
         CloseBtn.MouseButton1Up,
         function()
             SixLib:MakeNotification(
-                {Name = "Six Hub", Content = "Destruindo Script...", Image = "rbxassetid://", Time = 5}
+                {Name = "Six Library", Content = "Destruindo Script...", Image = "rbxassetid://", Time = 5}
             )
             task.wait(1)
             Six:Destroy()
@@ -1065,7 +1117,7 @@ function SixLib:MakeWindow(WindowConfig)
     )
 
     SixLib:MakeNotification(
-        {Name = "Six Hub", Content = "        Carregando Script...", Image = "rbxassetid://", Time = 5}
+        {Name = "Six Library", Content = "        Carregando Script...", Image = "rbxassetid://", Time = 5}
     )
 
     local function LoadSequence()
