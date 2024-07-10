@@ -1,200 +1,335 @@
 ## Six Library
+
 ```lua
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ySixxNz/SixLib/LibraryV1/Source')))()
-```
-## Criando uma Janela
-```lua
-local Window = OrionLib:MakeWindow({Name = "Título da biblioteca", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local OrionLib = loadstring(game:HttpGet(("https://raw.githubusercontent.com/ySixxNz/OrionLib/LibraryV1/Source")))()
 ```
 
-## Criando uma Aba
+## Creating a Window
+
 ```lua
-local Tab = Window:MakeTab({
-        Name = "Aba 1",
-        Icon = "rbxassetid://4483345998",
-        PremiumOnly = false
-})
+local Window =
+    OrionLib:MakeWindow({Name = "Library Title", HidePremium = false, SaveConfig = true, ConfigFolder = "Orion*Test"})
+
+--[[
+Name = <string> - The name of the UI.
+HidePremium = <bool> - Whether or not the user details shows Premium status or not.
+SaveConfig = <bool> - Toggles the config saving in the UI.
+ConfigFolder = <string> - The name of the folder where the configs are saved.
+IntroEnabled = <bool> - Whether or not to show the intro animation.
+IntroText = <string> - Text to show in the intro animation.
+IntroIcon = <string> - URL to the image you want to use in the intro animation.
+Icon = <string> - URL to the image you want displayed on the window.
+CloseCallback = <function> - Function to execute when the window is closed.
+]]
 ```
 
-## Criando uma Seção
+## Creating a Tab
 ```lua
-local Section = Tab:AddSection({
-        Name = "Seção"
-})
-```
-## Criando uma Notificação
-```lua
-OrionLib:MakeNotification({
-        Name = "Título!",
-        Content = "Conteúdo da notificação... o que vai dizer??",
-        Image = "rbxassetid://4483345998",
-        Time = 5
-})
-```
-
-## Criando um Botão
-```lua
-Tab:AddButton({
-        Name = "Botão!",
-        Callback = function()
-                      print("botão pressionado")
-          end    
-})
+local Tab =
+            Window:MakeTab(
+            {
+                Name = "Tab 1",
+                Icon = "rbxassetid://4483345998",
+                PremiumOnly = false
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the tab.
+                Icon = <string> - The icon of the tab.
+                PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+                ]]
 ```
 
-## Criando uma Alternância (Toggle)
+## Creating a Section
+
 ```lua
-Tab:AddToggle({
-        Name = "Esta é uma alternância!",
-        Default = false,
-        Callback = function(Value)
-                print(Value)
-        end    
-})
+local Section =
+            Tab:AddSection(
+            {
+                Name = "Section"
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the section.
+                ]]
 ```
 
-## Alterando o valor de uma Alternância existente
+## Creating a Notification
+
+```lua
+OrionLib:MakeNotification(
+            {
+                Name = "Title!",
+                Content = "Notification content... what will it say??",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            }
+        )
+        
+        --[[
+                Title = <string> - The title of the notification.
+                Content = <string> - The content of the notification.
+                Image = <string> - The icon of the notification.
+                Time = <number> - The duration of the notification.
+                ]]
+
+```
+
+## Creating a Button
+
+```lua
+Tab:AddButton(
+              {
+                  Name = "Button!",
+                  Callback = function()
+                      print("button pressed")
+                  end
+              }
+          )
+          
+          --[[
+                    Name = <string> - The name of the button.
+                    Callback = <function> - The function of the button.
+                    ]]
+```
+
+## Creating a Toggle
+
+```lua
+Tab:AddToggle(
+            {
+                Name = "This is a toggle!",
+                Default = false,
+                Callback = function(Value)
+                    print(Value)
+                end
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the toggle.
+                Default = <bool> - The default value of the toggle.
+                Callback = <function> - The function of the toggle.
+                ]]
+```
+
+## Changing the value of an existing Toggle
+
 ```lua
 CoolToggle:Set(true)
 ```
 
-## Criando um Seletor de Cores
+## Creating a Color Picker
+
 ```lua
-Tab:AddColorpicker({
-        Name = "Seletor de Cores",
-        Default = Color3.fromRGB(255, 0, 0),
-        Callback = function(Value)
-                print(Value)
-        end          
-})
+Tab:AddColorpicker(
+            {
+                Name = "ColorPicker",
+                Default = Color3.fromRGB(255, 0, 0),
+                Callback = function(Value)
+                    print(Value)
+                end
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the colorpicker.
+                Default = <color3> - The default value of the colorpicker.
+                Callback = <function> - The function of the colorpicker.
+                ]]
 ```
 
-## Definindo o valor do seletor de 
+## Setting the value of the selector
+
 ```lua
 ColorPicker:Set(Color3.fromRGB(255,255,255))
 ```
 
-## Criando um Controle Deslizante (Slider)
+## Creating a Slider
+
 ```lua
-Tab:AddSlider({
-        Name = "Controle Deslizante",
-        Min = 0,
-        Max = 20,
-        Default = 5,
-        Color = Color3.fromRGB(255,255,255),
-        Increment = 1,
-        ValueName = "bananas",
-        Callback = function(Value)
-                print(Value)
-        end    
-})
+Tab:AddSlider(
+            {
+                Name = "Slider",
+                Min = 0,
+                Max = 20,
+                Default = 5,
+                Color = Color3.fromRGB(255, 255, 255),
+                Increment = 1,
+                ValueName = "bananas",
+                Callback = function(Value)
+                    print(Value)
+                end
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the slider.
+                Min = <number> - The minimal value of the slider.
+                Max = <number> - The maximum value of the slider.
+                Increment = <number> - How much the slider will change value when dragging.
+                Default = <number> - The default value of the slider.
+                ValueName = <string> - The text after the value number.
+                Callback = <function> - The function of the slider.
+                ]]
 ```
 
-## Alterando o Valor do Controle Deslizante
+## Changing the Slider Value
+
 ```lua
 Slider:Set(2)
 ```
 
-## Criando um Rótulo (Label)
+Make sure you make your slider a variable (local CoolSlider = Tab:AddSlider...) for this to work.
+
+## Creating a Label
 
 ```lua
-Tab:AddLabel("Rótulo")
+Tab:AddLabel("Label")
 ```
 
-## Alterando o valor de um rótulo existente
+## Changing the value of an existing label
+
 ```lua
-CoolLabel:Set("Rótulo Novo!")
+CoolLabel:Set("New Label!")
 ```
 
+## Creating a Paragraph
 
-## Criando um Parágrafo
 ```lua
-Tab:AddParagraph("Parágrafo", "Conteúdo do parágrafo")
+Tab:AddParagraph("Paragraph", "Paragraph content")
 ```
 
-## Alterando um parágrafo existente
+## Changing an existing paragraph
+
 ```lua
-CoolParagraph:Set("Parágrafo Novo!", "Novo Conteúdo do Parágrafo!")
+CoolParagraph:Set("New paragraph!", "New Paragraph Content!")
 ```
 
-## Criando uma Entrada Adaptativa
+## Creating an Adaptive Input
+
 ```lua
-Tab:AddTextbox({
-        Name = "Caixa de Texto",
-        Default = "entrada padrão",
-        TextDisappear = true,
-        Callback = function(Value)
-                print(Value)
-        end          
-})
+Tab:AddTextbox(
+	    {
+	        Name = "Textbox",
+	        Default = "default box input",
+	        TextDisappear = true,
+	        Callback = function(Value)
+	            print(Value)
+	        end
+	    }
+	)
+	
+		        --[[
+				Name = <string> - The name of the textbox.
+				Default = <string> - The default value of the textbox.
+				TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
+				Callback = <function> - The function of the textbox.
+				]]
 ```
 
+## Creating a Keybind
 
-## Criando uma Tecla de Atalho (Keybind)
 ```lua
-Tab:AddBind({
-        Name = "Atalho",
-        Default = Enum.KeyCode.E,
-        Hold = false,
-        Callback = function()
-                print("pressionado")
-        end    
-})
+Tab:AddBind(
+            {
+                Name = "Bind",
+                Default = Enum.KeyCode.E,
+                Hold = false,
+                Callback = function()
+                    print("press")
+                end
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the bind.
+                Default = <keycode> - The default value of the bind.
+                Hold = <bool> - Makes the bind work like: Holding the key > The bind returns true, Not holding the key > Bind returns false.
+                Callback = <function> - The function of the bind.
+                ]]
 ```
 
-## Chaning o valor de uma bind
+## Changing the value of a bind
+
 ```lua
 Bind:Set(Enum.KeyCode.E)
 ```
 
-## Criando um Menu suspenso (Dropdown)
+## Creating a Dropdown
+
 ```lua
-Tab:AddDropdown({
-        Name = "Dropdown",
-        Default = "1",
-        Options = {"1", "2"},
-        Callback = function(Value)
-                print(Value)
-        end    
-})
+Tab:AddDropdown(
+            {
+                Name = "Dropdown",
+                Default = "1",
+                Options = {"1", "2"},
+                Callback = function(Value)
+                    print(Value)
+                end
+            }
+        )
+        
+        --[[
+                Name = <string> - The name of the dropdown.
+                Default = <string> - The default value of the dropdown.
+                Options = <table> - The options in the dropdown.
+                Callback = <function> - The function of the dropdown.
+                ]]
 ```
 
-## Adicionando um conjunto de novos botões Dropdown a um menu existente
+## Adding a set of new Dropdown buttons to an existing menu
 
-O valor booleano abaixo "true" indica se os botões atuais serão excluídos ou não.
+The Boolean value below "true" indicates whether the current buttons will be deleted or not.
 
 ```lua
 Dropdown:Refresh(List<table>,true)
 ```
 
+## Selecting a dropdown menu option
 
-## Selecionando uma opção de menu suspenso
 ```lua
-Dropdown:Set("opção de menu suspenso")
+Dropdown:Set("dropdown option")
 ```
 
-## Concluindo seu script (OBRIGATÓRIO)
-## A função abaixo precisa ser adicionada no final do seu código.
+## Completing your script (REQUIRED)
+
+The function below needs to be added at the end of your code.
 
 ```lua
 OrionLib:Init()
 ```
 
-## Como funcionam as flags.
-O recurso de flags na interface pode ser confuso para algumas pessoas. Ele serve para ser o identificador de um elemento no arquivo de configuração e permite acessar o valor de um elemento em qualquer parte do código.
- 
- Abaixo está um exemplo de uso de flags.
- ```lua
- Tab1:AddToggle({
-     Name = "Toggle",
-     Default = true,
-     Save = true,
-     Flag = "toggle"
- })
- ```
- 
- ```lua
- print(OrionLib.Flags["toggle"].Value) -- imprime o valor do toggle.
- ```
+## How Flags Work
 
-As flags só funcionam com toggle, slider, dropdown, bind e colorpicker.
+The flag feature in the interface can be confusing for some people. It serves as the identifier of an element in the config file and allows access to the value of an element anywhere in the code.
+
+Below is an example of using flags.
+
+```lua
+Tab:AddToggle(
+    {
+        Name = "Toggle",
+        Default = true,
+        Save = true,
+        Flag = "toggle"
+    }
+)
+```
+
+```lua
+print(OrionLib.Flags["toggle"].Value) -- prints the value of the toggle.
+```
+
+Flags only work with toggle, slider, dropdown, bind, and colorpicker.
+
+## Making your interface work with configs.
+
+In order to make your interface use the configs function you first need to add the `SaveConfig` and `ConfigFolder` arguments to your window function. The explanation of these arguments in above. Then you need to add the `Flag` and `Save` values to every toggle, slider, dropdown, bind, and colorpicker you want to include in the config file. The `Flag = <string> `argument is the ID of an element in the config file. `The Save = <bool>`  argument includes the element in the config file. Config files are made for every game the library is launched in.
+
+## Destroying the Interface
+```lua
+OrionLib:Destroy()
+```
