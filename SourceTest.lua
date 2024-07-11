@@ -1109,7 +1109,7 @@ function SixLib:MakeWindow(WindowConfig)
         CloseBtn.MouseButton1Up,
         function()
             SixLib:MakeNotification(
-                {Name = "Six Library", Content = "Destruindo Script...", Image = "rbxassetid://", Time = 5}
+                {Name = "Six Library", Content = "Destroying Script...", Image = "rbxassetid://", Time = 5}
             )
             task.wait(1)
             Six:Destroy()
@@ -1117,7 +1117,7 @@ function SixLib:MakeWindow(WindowConfig)
     )
 
     SixLib:MakeNotification(
-        {Name = "Six Library", Content = "        Carregando Script...", Image = "rbxassetid://", Time = 5}
+        {Name = "Six Library", Content = "        Loading Script...", Image = "rbxassetid://", Time = 5}
     )
 
     local function LoadSequence()
@@ -3030,5 +3030,50 @@ end
 function SixLib:Destroy()
     Six:Destroy()
 end
+
+function Six:AddMinimizeButton(Configs)
+    local ButtonProps = Configs[1] or Configs.Button or {}
+    local UICorner = Configs[2] or Configs.UICorner or {true, {CornerRadius = UDim.new(0.5, 0)}}
+    local UIStroke = Configs[3] or Configs.UIStroke or {false, {Color = Theme["Color Stroke"]}}
+    UICorner[2] = UICorner[2] or {}
+    UIStroke[2] = UIStroke[2] or {}
+    
+    local ButtonMinimize = SetProps(MakeDrag(Create("ImageButton", ScreenGui, {
+      Size = UDim2.fromOffset(40, 40),
+      Active = true,
+      Position = UDim2.fromScale(0.15, 0.15),
+      BackgroundColor3 = Theme["Defal"],
+      Image = GetIcon("egg")
+    })), ButtonProps)
+    
+    local MinimizeBool
+    ButtonMinimize.Activated:Connect(function()
+      MainFrame.Visible = MinimizeBool
+      MinimizeBool = not MinimizeBool
+    end)
+    
+    local StrokeBTN, CornerBTN
+    if UICorner[1] then
+      CornerBTN = Create("UICorner", ButtonMinimize)
+      SetProps(CornerBTN, UICorner[2])
+    end
+    if UIStroke[1] then
+      StrokeBTN = Create("UIStroke", ButtonMinimize)
+      SetProps(StrokeBTN, UIStroke[2])
+    end
+    
+    local Minimize = {
+      Button = ButtonMinimize,
+      Stroke = StrokeBTN,
+      Corner = CornerBTN
+    }
+    function Minimize:Visible(Bool)
+      ButtonMinimize.Visible = Bool
+    end
+    function Minimize:Destroy()
+      ButtonMinimize:Destroy()
+    end
+    return Minimize
+  end
 
 return SixLib
