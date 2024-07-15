@@ -665,11 +665,11 @@ function OrionLib:MakeWindow(WindowConfig)
         end)
 
         AddConnection(CloseBtn.MouseButton1Up, function()
-          OrionLib:MakeNotification({Name = "Six Hub",Content = "Destroying Script..." ,Image = "rbxassetid://18503262070",Time = 5})task.wait(1)
+          OrionLib:MakeNotification({Name = "Six Hub",Content = "Destroying Script..." ,Image = "rbxassetid://18503262032",Time = 5})task.wait(1)
           Orion:Destroy()
         end)
 
-        OrionLib:MakeNotification({Name = "Six Hub",Content = "        Loading Script..." ,Image = "rbxassetid://18503294473",Time = 5})
+        OrionLib:MakeNotification({Name = "Six Hub",Content = "        Loading Script..." ,Image = "rbxassetid://18503294448",Time = 5})
 
         local function LoadSequence()
                 MainWindow.Visible = false
