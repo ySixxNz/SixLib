@@ -45,26 +45,7 @@ local function GetIcon(IconName)
 end   
 
 local Orion = Instance.new("ScreenGui")
-guiRH = Instance.new("ScreenGui",Orion)
-nextb = Instance.new("ImageButton", guiRH)
-gui = Instance.new("UICorner", nextb)
-
-Orion.Name = "Six Hub <Orion Lib>"
-
-guiRH.Name = "Minimize"
-nextb.Position = UDim2.new(0,100,0,60)
-nextb.Size = UDim2.new(0,40,0,40)
-nextb.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-nextb.Image = "rbxassetid://7072720870"
-nextb.Visible = false
-nextb.Active = true
-nextb.Draggable = true
-
-nextb.MouseButton1Down:connect(function()
-  nextb.Image = (Orion.Frame1.Visible and "rbxassetid://7072720870") or "rbxassetid://7072719338"
-  Orion.Frame1.Visible = not Orion.Frame1.Visible
-end)
-
+Orion.Name = "Orion"
 if syn then
 	syn.protect_gui(Orion)
 	Orion.Parent = game.CoreGui
@@ -92,6 +73,7 @@ function OrionLib:IsRunning()
 	else
 		return Orion.Parent == game:GetService("CoreGui")
 	end
+
 end
 
 local function AddConnection(Signal, Function)
@@ -121,7 +103,7 @@ local function MakeDraggable(DragPoint, Main)
 				Dragging = true
 				MousePos = Input.Position
 				FramePos = Main.Position
-				
+
 				Input.Changed:Connect(function()
 					if Input.UserInputState == Enum.UserInputState.End then
 						Dragging = false
@@ -189,7 +171,7 @@ end
 local function ReturnProperty(Object)
 	if Object:IsA("Frame") or Object:IsA("TextButton") then
 		return "BackgroundColor3"
-	end
+	end 
 	if Object:IsA("ScrollingFrame") then
 		return "ScrollBarImageColor3"
 	end 
@@ -198,10 +180,10 @@ local function ReturnProperty(Object)
 	end 
 	if Object:IsA("TextLabel") or Object:IsA("TextBox") then
 		return "TextColor3"
-	end
+	end   
 	if Object:IsA("ImageLabel") or Object:IsA("ImageButton") then
 		return "ImageColor3"
-	end
+	end   
 end
 
 local function AddThemeObject(Object, Type)
@@ -463,7 +445,22 @@ function OrionLib:MakeNotification(NotificationConfig)
 		wait(1.35)
 		NotificationFrame:Destroy()
 	end)
-end
+end    
+
+function OrionLib:Init()
+	if OrionLib.SaveCfg then	
+		pcall(function()
+			if isfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt") then
+				LoadCfg(readfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt"))
+				OrionLib:MakeNotification({
+					Name = "Configuration",
+					Content = "Auto-loaded configuration for the game " .. game.GameId .. ".",
+					Time = 5
+				})
+			end
+		end)		
+	end	
+end	
 
 function OrionLib:MakeWindow(WindowConfig)
 	local FirstTab = true
@@ -472,14 +469,14 @@ function OrionLib:MakeWindow(WindowConfig)
 	local UIHidden = false
 
 	WindowConfig = WindowConfig or {}
-	WindowConfig.Name = WindowConfig.Name or "Six Hub"
+	WindowConfig.Name = WindowConfig.Name or "Orion Library"
 	WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
 	WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
 	WindowConfig.HidePremium = WindowConfig.HidePremium or false
 	if WindowConfig.IntroEnabled == nil then
 		WindowConfig.IntroEnabled = true
 	end
-	WindowConfig.IntroText = WindowConfig.IntroText or "Six Hub"
+	WindowConfig.IntroText = WindowConfig.IntroText or "Orion Library"
 	WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
 	WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
 	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
@@ -532,7 +529,6 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local WindowStuff = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
 		Size = UDim2.new(0, 150, 1, -50),
-		Name = "ScrollBar",
 		Position = UDim2.new(0, 0, 0, 50)
 	}), {
 		AddThemeObject(SetProps(MakeElement("Frame"), {
@@ -599,23 +595,25 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local WindowTopBarLine = AddThemeObject(SetProps(MakeElement("Frame"), {
 		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 1, -1),
+		Position = UDim2.new(0, 0, 1, -1)
 	}), "Stroke")
 
 	local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
-	  Name = "Frame1",
 		Parent = Orion,
 		Position = UDim2.new(0.5, -307, 0.5, -172),
 		Size = UDim2.new(0, 615, 0, 344),
-		Transparency = 0.2,
-		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-		ClipsDescendants = true,
-		Active = true,
-		Draggable = true
+		ClipsDescendants = true
 	}), {
+		--SetProps(MakeElement("Image", "rbxassetid://3523728077"), {
+		--	AnchorPoint = Vector2.new(0.5, 0.5),
+		--	Position = UDim2.new(0.5, 0, 0.5, 0),
+		--	Size = UDim2.new(1, 80, 1, 320),
+		--	ImageColor3 = Color3.fromRGB(33, 33, 33),
+		--	ImageTransparency = 0.7
+		--}),
 		SetChildren(SetProps(MakeElement("TFrame"), {
 			Size = UDim2.new(1, 0, 0, 50),
-			Name = "TopBar",
+			Name = "TopBar"
 		}), {
 			WindowName,
 			WindowTopBarLine,
@@ -636,7 +634,27 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
+	if WindowConfig.ShowIcon then
+		WindowName.Position = UDim2.new(0, 50, 0, -24)
+		local WindowIcon = SetProps(MakeElement("Image", WindowConfig.Icon), {
+			Size = UDim2.new(0, 20, 0, 20),
+			Position = UDim2.new(0, 25, 0, 15)
+		})
+		WindowIcon.Parent = MainWindow.TopBar
+	end	
+
 	MakeDraggable(DragPoint, MainWindow)
+
+	AddConnection(CloseBtn.MouseButton1Up, function()
+		MainWindow.Visible = false
+		UIHidden = true
+		OrionLib:MakeNotification({
+			Name = "Interface Hidden",
+			Content = "Tap RightShift to reopen the interface",
+			Time = 5
+		})
+		WindowConfig.CloseCallback()
+	end)
 
 	AddConnection(UserInputService.InputBegan, function(Input)
 		if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
@@ -663,13 +681,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		end
 		Minimized = not Minimized    
 	end)
-	
-	AddConnection(CloseBtn.MouseButton1Up, function()
-	  OrionLib:MakeNotification({Name = "Six Hub",Content = "Destruindo Script..." ,Image = "rbxassetid://",Time = 5})task.wait(1)
-	  Orion:Destroy()
-	end)
-
-	OrionLib:MakeNotification({Name = "Six Hub",Content = "	Loading Script..." ,Image = "rbxassetid://",Time = 5})
 
 	local function LoadSequence()
 		MainWindow.Visible = false
@@ -692,16 +703,30 @@ function OrionLib:MakeWindow(WindowConfig)
 			TextTransparency = 1
 		})
 
+		local LoadSequenceText2 = SetProps(MakeElement("Label", "by ySixx", 14), {
+			Parent = Orion,
+			Size = UDim2.new(1, 0, 1, 0),
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.new(0.5, 19, 0.5, 20),
+			TextXAlignment = Enum.TextXAlignment.Center,
+			Font = Enum.Font.GothamBold,
+			TextTransparency = 1,
+			TextSize = 15
+		})
+
+
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
 		wait(0.8)
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
 		wait(0.3)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
+		TweenService:Create(LoadSequenceText2, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
 		wait(2)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		MainWindow.Visible = true
 		LoadSequenceLogo:Destroy()
 		LoadSequenceText:Destroy()
+		LoadSequenceText2:Destroy()
 	end 
 
 	if WindowConfig.IntroEnabled then
@@ -1176,6 +1201,14 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				end	
 
+				local function copyTable(original)
+					local copy = {}
+					for key, value in pairs(original) do
+						copy[key] = value
+					end
+					return copy
+				end
+
 				function Dropdown:Refresh(Options, Delete)
 					if Delete then
 						for _,v in pairs(Dropdown.Buttons) do
@@ -1184,9 +1217,13 @@ function OrionLib:MakeWindow(WindowConfig)
 						table.clear(Dropdown.Options)
 						table.clear(Dropdown.Buttons)
 					end
-					Dropdown.Options = Options
+					Dropdown.Options = copyTable(Options)
 					AddOptions(Dropdown.Options)
 				end  
+
+				function Dropdown:Title(Text)
+					DropdownFrame.F.Content.Text = Text
+				end
 
 				function Dropdown:Set(Value)
 					if not table.find(Dropdown.Options, Value) then
@@ -1358,6 +1395,8 @@ function OrionLib:MakeWindow(WindowConfig)
 				TextboxConfig.TextDisappear = TextboxConfig.TextDisappear or false
 				TextboxConfig.Callback = TextboxConfig.Callback or function() end
 
+				local Textbox = {Value = TextboxConfig.Default, Options = TextboxConfig.Options, Type = "Textbox"}
+				
 				local Click = SetProps(MakeElement("Button"), {
 					Size = UDim2.new(1, 0, 1, 0)
 				})
@@ -1367,7 +1406,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					BackgroundTransparency = 1,
 					TextColor3 = Color3.fromRGB(255, 255, 255),
 					PlaceholderColor3 = Color3.fromRGB(210,210,210),
-					PlaceholderText = "[Input]",
+					PlaceholderText = "Input",
 					Font = Enum.Font.GothamSemibold,
 					TextXAlignment = Enum.TextXAlignment.Center,
 					TextSize = 14,
@@ -1399,6 +1438,10 @@ function OrionLib:MakeWindow(WindowConfig)
 					Click
 				}), "Second")
 
+				function Textbox:Title(Text)
+					TextboxFrame.Content.Text = Text
+				end
+
 				AddConnection(TextboxActual:GetPropertyChangedSignal("Text"), function()
 					--TextContainer.Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)
 					TweenService:Create(TextContainer, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, TextboxActual.TextBounds.X + 16, 0, 24)}):Play()
@@ -1429,6 +1472,8 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddConnection(Click.MouseButton1Down, function()
 					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
+
+				return Textbox
 			end 
 			function ElementFunction:AddColorpicker(ColorpickerConfig)
 				ColorpickerConfig = ColorpickerConfig or {}
@@ -1695,8 +1740,9 @@ function OrionLib:MakeWindow(WindowConfig)
 				}), "Text")
 			})
 		end
-		return ElementFunction
+		return ElementFunction   
 	end  
+	
 	return TabFunction
 end   
 
