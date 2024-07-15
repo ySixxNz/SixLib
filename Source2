@@ -665,7 +665,7 @@ function OrionLib:MakeWindow(WindowConfig)
         end)
 
         AddConnection(CloseBtn.MouseButton1Up, function()
-          OrionLib:MakeNotification({Name = "Six Hub",Content = "Destroying Script..." ,Image = "rbxassetid://18503262032",Time = 5})task.wait(1)
+          OrionLib:MakeNotification({Name = "Six Hub",Content = "Destroying Script..." ,Image = "rbxthumb://type=Asset&id=18503262032&w=150&h=150",Time = 5})task.wait(1)
           Orion:Destroy()
         end)
 
@@ -683,15 +683,27 @@ function OrionLib:MakeWindow(WindowConfig)
                 })
 
                 local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {
-                        Parent = Orion,
-                        Size = UDim2.new(1, 0, 1, 0),
-                        AnchorPoint = Vector2.new(0.5, 0.5),
-                        Position = UDim2.new(0.5, 19, 0.5, 0),
-                        TextXAlignment = Enum.TextXAlignment.Center,
-                        Font = Enum.Font.GothamBold,
-                        TextTransparency = 1
-                })
-
+              			Parent = Orion,
+              			Size = UDim2.new(1, 0, 1, 0),
+              			AnchorPoint = Vector2.new(0.5, 0.5),
+              			Position = UDim2.new(0.5, 19, 0.5, 0),
+              			TextXAlignment = Enum.TextXAlignment.Center,
+              			Font = Enum.Font.GothamBold,
+              			TextTransparency = 1
+              		})
+              
+              		local LoadSequenceText2 = SetProps(MakeElement("Label", "by ySixx", 14), {
+              			Parent = Orion,
+              			Size = UDim2.new(1, 0, 1, 0),
+              			AnchorPoint = Vector2.new(0.5, 0.5),
+              			Position = UDim2.new(0.5, 19, 0.5, 20),
+              			TextXAlignment = Enum.TextXAlignment.Center,
+              			Font = Enum.Font.GothamBold,
+              			TextTransparency = 1,
+              			TextSize = 15
+              		})
+              
+              
                 TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
                 wait(0.8)
                 TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
@@ -700,8 +712,9 @@ function OrionLib:MakeWindow(WindowConfig)
                 wait(2)
                 TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
                 MainWindow.Visible = true
-                LoadSequenceLogo:Destroy()
-                LoadSequenceText:Destroy()
+                              		LoadSequenceLogo:Destroy()
+                              		LoadSequenceText:Destroy()
+                              		LoadSequenceText2:Destroy()
         end 
 
         if WindowConfig.IntroEnabled then
