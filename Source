@@ -28,27 +28,23 @@ local OrionLib = {
 local Icons = {}
 
 local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/ySixxNz/LibraryV1/refs/heads/LibraryV1/icons.json")).icons
+    local jsonData = game:HttpGet("https://raw.githubusercontent.com/ySixxNz/LibraryV1/refs/heads/LibraryV1/icons.json")
+    Icons = HttpService:JSONDecode(jsonData).icons
 end)
 
 if not Success then
-        warn("\nOrion Library - Failed to load Feather Icons. Error code: " .. Response .. "\n")
-end        
+    warn("\nOrion Library - Failed to load Feather Icons. Error code: " .. Response .. "\n")
+end
 
 local function GetIcon(IconName)
-        if Icons[IconName] ~= nil then
-                return Icons[IconName]
-        else
-                return nil
-        end
-end   
-
+    return Icons[IconName] or nil
+end
 local Orion = Instance.new("ScreenGui")
 guiRH = Instance.new("ScreenGui",Orion)
 nextb = Instance.new("ImageButton", guiRH)
 gui = Instance.new("UICorner", nextb)
 
-Orion.Name = "Six Hub <Orion Lib>"
+Orion.Name = "Six Hub"
 
 guiRH.Name = "Minimize"
 nextb.Position = UDim2.new(0,100,0,60)
